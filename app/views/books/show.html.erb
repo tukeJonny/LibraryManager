@@ -1,0 +1,54 @@
+<% store_location %>
+
+<h1>詳細情報</h1>
+<p class="border"></p>
+
+<% options = [] %>
+<% @libraries.each do |lib| %>
+	<% options << ["#{lib.name}", lib.id] %>
+<% end %>
+
+<div id="detail">
+	<% i = @book.items[0] %>
+	<div class="image">
+		<%= image_tag i.get('LargeImage/URL'), {:style => 'border: none;'} %>
+	</div>
+	<div class="attr">
+		<h2 class="title"><%= i.get('ItemAttributes/Title')%></h2>
+		<ul>
+			<li class="author"><%= i.get('ItemAttributes/Author')%></li>
+			<li class="publisher"><%= i.get('ItemAttributes/Publisher')%></li>
+			<li class="publicationdate"><%= i.get('ItemAttributes/PublicationDate')%></li>
+			<% isbn13 = isbn10_to_13(i.get('ItemAttributes/ISBN')).to_i %>
+			<li class="isbn"><%= isbn13 %></li>
+		</ul>
+	</div>
+
+	<% if @current_member %>
+		<div id="status">
+		<h1>所蔵情報</h1>
+		<table border="1">
+			<tr>
+				<th>所蔵館</th>
+				<th>状態</th>
+				<th>受取館</th>
+				<th>予約</th>
+			</tr>
+			<% books = Book.where("isbn = ?", isbn13) %>
+			<% books.each do |book| %>
+				<tr>
+				<th><%= Library.where("id = ?", book.library_id)[0].name %></th>
+				<th><%= (book.quantity > AvailableQueue.where("book_id = ?", book.id).count + LendQueue.where("book_id = ?", book.id).count) ? "貸出可" : "貸出中" %></th>
+				<%= form_tag :reserve_book, method: :put do %>
+					<%= hidden_field_tag :syozou_lib_id, book.library_id %>
+				<%= hidden_field_tag :book_id, book.id %>
+				<%= hidden_field_tag :q, book.quantity %>
+				<th><%= select_tag :uketori_lib_id, options_for_select(options) %></th>
+				<th><%= submit_tag '予約する' %></th>
+			<% end %>
+			<% end %>
+			</tr>
+		</table>
+	</div>
+<% end %>
+</div>

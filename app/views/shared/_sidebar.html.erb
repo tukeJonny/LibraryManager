@@ -1,0 +1,17 @@
+<div id="sidebar">
+	<ul>
+		<li><%= link_to 'お知らせ', notices_path %></li>
+		<li><%= link_to '蔵書検索', search_books_path %></li>
+		<% if @current_member %>
+			<li><%= link_to '予約状況確認', reservations_path  %></li>
+	<% end %>
+		<li><%= link_to '図書館一覧', libraries_path %></li>
+		<% if @current_member && @current_member.admin %>
+			<li><%= link_to '蔵書管理', books_path %></li>
+		<li><%= link_to '会員一覧', members_path %></li>
+		<li><%= link_to '貸出処理', atolEdit_reservations_path %></li>
+		<li><%= link_to '返却処理',  bookReturnEdit_reservations_path %></li>
+		<li><%= link_to '受け取り可通知', rtoaEdit_reservations_path %></li>
+	<% end %>
+	</ul>
+</div>

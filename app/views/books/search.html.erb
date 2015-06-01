@@ -1,0 +1,44 @@
+<% store_location %>
+<h1>蔵書検索</h1>
+<p class="border"></p>
+<div>
+	<%= form_tag :search_books,method: :get do %>
+		<%= text_field_tag 'keyword', @keyword, :placeholder => 'タイトル、キーワード、ISBNなど'  %>
+	<%= select_tag(:genre_code, options_for_select( [["文学・評論",466284], ["人文・思想",571582],["社会・政治",571584],["ノンフィクション",492152],["歴史・地理" ,466286],["ビジネス・経済",466282],["投資・金融・会社経営",492054],["科学・テクノロジー" ,466290],["医学・薬学・看護学・歯科学",492166],["コンピュータ・IT",466298],["アート・建築・デザイン" ,466294],["趣味・実用" ,466292],["スポーツ・アウトドア",2400471051],["資格・検定・就職" ,492228],["暮らし・健康・子育て",466304],["旅行ガイド・マップ",492090],["語学・辞事典・年鑑",466302],["教育・学参・受験",3148931],["絵本・児童書",466306],["コミック・ラノベ・BL",2501045051]]),:prompt => "ジャンルを選択してください" ) %>
+
+	<% options = [] %>
+	<% @libraries.each do |lib| %>
+		<% options << ["#{lib.name}", lib.id] %>
+<% end %>
+
+	<%= select_tag(:lib_id, options_for_select(options), :prompt => "所蔵館") %>
+
+	<%= submit_tag '検索' %>
+<% end %>
+</div>
+
+<div>
+	<% if @res.present? %>
+		<h3>検索結果</h3>
+	<p class="boarder"></p>
+	<div class="result">
+		<table border="3">
+			<% if @result.empty? %>
+				<p>条件に一致する本は見つかりませんでした。</p>
+		<% else %>
+				<tr>
+				<th id="image">Image</th><th id="title">Title</th><th id="author">Author</th>
+			</tr>
+			<% @result.each do |book| %>  
+				<tr>
+				<th><%= image_tag book[0] %></th><th><%= link_to book[1], book_path(book[3].isbn)%></th><th><%= book[2] %></th>
+			<% end %>
+			</tr>
+		<% end %>
+		</table>
+	</div>
+<% end %>
+</div>
+
+
+

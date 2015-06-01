@@ -1,0 +1,11 @@
+<h1>お知らせ詳細</h1>
+<% store_location %>
+<p class="border"></p>
+
+<table border="1">
+	<tr><th>タイトル</th><td><%= @notice.title%></td></tr>
+	<tr><th>掲載日</th><td><%= @notice.released_at %></td>
+		<tr><th>発信元</th><td><%= (@notice.library_id != nil) ?  Library.find(@notice.library_id).name : "不明"  %></td></tr>
+		<tr><th>本文</th><td><%= simple_format(@notice.body) %></td></tr>
+	</table>
+	<%= link_to "お知らせ一覧へ戻る", notices_path %>

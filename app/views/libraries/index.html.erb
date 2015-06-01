@@ -1,0 +1,15 @@
+
+<% store_location %>
+<h2>図書館一覧</h2>
+<p class="border"><p>
+<table class="list">
+	<tr>
+		<th>図書館名</th><th>アドレス</th>
+	</tr>
+	<% @libraries.each do |lib| %>
+		<tr>
+		<td><%= lib.name %></td>
+		<td><%= link_to lib.url, '#' %></td>
+	</tr>
+<% end %>
+</table>

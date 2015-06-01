@@ -1,0 +1,88 @@
+$container_width: 1000px;
+$sidebar_width: 250px;
+
+
+/*全体の枠*/
+div#container {
+  margin-left: 150px;
+  margin-top: 30px;
+  padding: 0;
+}
+
+
+
+/*ヘッダ*/
+div#header {
+  width: $container_width;
+  h1 {
+    float: left;
+    margin: 0;
+    width: 500px;
+    font-size: 60px; 
+  }
+}
+
+
+
+/*サイドバー*/
+div#sidebar {
+  width: $sidebar_width;
+  float: left;
+  ul {
+    width: 150px;
+    li {
+      border: 1px solid;
+      list-style: none;
+      text-align: center;
+      a { 
+        text-decoration: none;
+        color: black;
+        display: block;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+
+/*コンテンツの枠*/
+div#content {
+  margin-left: $sidebar_width;
+  width: $container_width - $sidebar_width;
+}
+ 
+
+
+/*見出し下の線*/
+p.border {
+  width: $container_width - $sidebar_width;
+  border: 2px solid;
+}
+
+
+
+/*図書館一覧you*/
+td#libname {
+  width:150px;
+}
+
+td#address {
+  width:250px;}
+
+
+/*図書検索結果テーブル*/
+.results {
+  #image{ width: 60px; }
+  #title{ width: 200px; }
+  #author{ width: 150px; }
+}
+
+
+
+/*notice*/
+.notice {
+  padding: 3px;
+  border: 1px black solid;
+  background-color: #eee;
+}
+

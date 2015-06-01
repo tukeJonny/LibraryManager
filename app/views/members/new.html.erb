@@ -1,0 +1,7 @@
+<h1>会員情報登録</h1>
+<p class="border"></p>
+<%= form_for @member do |form| %>
+	<%= render "form", form: form %>
+<p><%= form.submit "登録" %></p>
+<% end %>
+

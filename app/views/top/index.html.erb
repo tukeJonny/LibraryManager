@@ -1,0 +1,23 @@
+<% store_location %>
+<% if @current_member %>
+	<h3>最近のお知らせ</h3>
+<% if @notices.present? %>
+	<table border="1">
+	<tr>
+		<th>タイトル</th><th>記事</th>
+	</tr>
+	<% @notices.each do |notice| %>
+		<tr>
+		<td width="150px"><p><%= notice.title %></p></td>
+		<td width="200px"><p><%= truncate(notice.body, length: 80) %></br></br>
+			<%= link_to "続きを読む", notice_path(notice.id) %></p></td>
+	</tr>
+<% end %>
+</table>
+<% else %>
+	<% @message = "新着のお知らせはありません。" %>
+<%= @message %>
+<% end %>
+<% else %>
+	<h1>ようこそ、Library Managerへ</h1>
+<% end %>

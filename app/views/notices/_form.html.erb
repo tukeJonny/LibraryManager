@@ -1,0 +1,23 @@
+<%= render "shared/errors", obj: @notice  %>
+<% options = [] %>
+<% @libraries.each do |lib| %>
+	<% options << ["#{lib.name}", lib.id] %>
+<% end %>
+<table class="attr">
+	<tr>
+		<th><%= form.label :title %></th>
+		<td><%= form.text_field :title, size: 20 %></td>
+	</tr>
+	<tr>
+		<th><%= form.label :library_id, "記事作成者" %></th>
+		<td><%= form.select :library_id, options %>
+	</tr>
+		<tr>
+			<th><%= form.label :body %></th>
+			<td><%= form.text_area :body, rows: 10, cols: 45 %></td>
+		</tr>
+		<tr>
+			<th><%= form.label :released_at, for: "notice_released_at_1i" %> 
+			<td><%= form.datetime_select :released_at, start_year: Time.now.year, end_year: Time.now.year,use_month_numbers: true %></td>
+			</tr>
+		</table>

@@ -1,0 +1,19 @@
+
+<div id="title">
+	<h1>図書貸出システム</h1>
+	<div id="account">
+		<% if @current_member %>
+			<p><%=  @current_member.name %>さん
+		<% if  @current_member.name == "admin0" %>
+			<%= "[システム管理者]" %>
+	<% elsif @current_member.admin %>
+			<%= "[司書ユーザー]" %>
+	<% end %>
+		<%= link_to 'ログアウト', :session, method: :delete ,confirm: "ログアウトしますか？"  %></p>
+		<p><%= link_to 'アカウントページ', member_path(@current_member.id)%> </p>
+	<% else %>
+			<p>Guestさん、こんにちは。  <%= link_to 'ログイン', :new_session  %> </p><p><%= link_to 'アカウントの新規作成', :new_member %></p>
+	<% end %>
+	</div>
+	<p><%= link_to 'HOME', root_path %></p>
+</div>

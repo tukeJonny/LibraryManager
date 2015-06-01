@@ -1,0 +1,139 @@
+<h1>利用状況確認</h1>
+<% store_location %>
+<p id="border"></p>
+
+<p class="border"><p>
+
+
+<head>
+<script type="text/javascript">
+function ChangeTab(tabname) {
+	// 全部消す
+	document.getElementById('tab1').style.display = 'none';
+	document.getElementById('tab2').style.display = 'none';
+	document.getElementById('tab3').style.display = 'none';
+	document.getElementById('tab4').style.display = 'none';
+
+	// 指定箇所のみ表示
+	document.getElementById(tabname).style.display = 'block';
+}
+</script>
+
+</head> 
+
+<div class="tabbox">
+	<p class="tabs"> |
+	<a href="#tab1" class="tab1" onclick="ChangeTab('tab1'); return false;">貸出中</a> |
+	<a href="#tab2" class="tab2" onclick="ChangeTab('tab2'); return false;">予約中</a> |
+	<a href="#tab3" class="tab3" onclick="ChangeTab('tab3'); return false;">履歴</a> |
+	<a href="#tab4" class="tab4" onclick="ChangeTab('tab4'); return false;">受け取り可</a> |
+	</p>
+	<div id="tab1" class="tab">
+		<I>貸出中Table</I>
+		<div class="list">
+			<table border="1">
+				<tr>
+					<th>予約番号</th><th>会員番号</th><th>ISBN</th><th>返却館</th><th>返却予定日</th>
+				</tr>
+				<% if @lendqueue.present? %>
+					<% @lendqueue.each do |res|  %>
+					<tr>
+					<td><%= res.reservation_id %></td>
+					<td><%= res.member_id %></td>
+					<td><%= link_to res.book.isbn, book_path(res.book.isbn) %></td>
+					<td><%= res.library.name %></td>
+					　　　　　　　　  <td><%= Reservation.find_by_id(res.reservation_id).lend_date + 7 %></td>
+				<% end %>
+				</tr>
+			<% end %>
+			</table>
+		</div>
+	</div>
+	<div id="tab2" class="tab">
+		<I>予約中Table</I>
+		<div class="list">
+			<table border="1">
+				<tr>
+					<th>予約番号</th><th>会員番号</th><th>ISBN</th><th>受け取り館</th><th>待ち人数</th><th>割り当て</th><th></th>
+				</tr>
+				<% if @reservequeue.present? %>
+					<% @reservequeue.each do |res|  %>
+					<tr>
+					<td><%= res.reservation_id %></td>
+					<td> <%= res.member_id %>
+					<td><%= link_to res.book.isbn, book_path(res.book.isbn) %></td>
+						<td><%= res.library.name %></td>
+						<% @visitorBefore = ReserveQueue.where("book_id = ? AND reservation_id < ? AND authority = ?", res.book_id, res.reservation_id, false).count %>
+						<td><%= @visitorBefore  %>人待ち
+							<td><%= (res.authority) ? "O" : "X" %>
+							<% unless res.authority %>
+							<%= form_tag reservation_path(res), method: :delete do %>
+								<%= hidden_field_tag :reserve_id, res.id %>
+								<th><%= submit_tag "削除", confirm: "本当に削除しますか？" %></th>
+							<% end %>
+						<% end %>
+						<% end %>
+						</tr>
+					<% end %>
+					</table>
+				</div>
+			</div>
+
+			<div id="tab3" class="tab">
+				<I>履歴Table</I>
+				<div class="list">
+					<table border="1">
+						<tr>
+							<th>予約番号</th><th>会員番号</th><th>ISBN</th><th>所蔵館</th><th>受け取り館</th><th>状態</th><th>貸出日</th><th>返却日</th>
+						</tr>
+						<% if @reservations.present? %>
+							<%  @reservations.each do |reserve| %>
+							<tr>
+							<td><%= reserve.id %></td>
+							<td><%= reserve.member_id %></td>
+							<td><%= link_to reserve.book.isbn, book_path(reserve.book.isbn) %></td>
+							<td><%= Library.find_by_id(reserve.book.library_id).name %></td>
+							<td><%= reserve.library.name %></td>
+							<% if ReserveQueue.find_by_reservation_id(reserve.id).present? %>
+								<td><font color= "blue">予約中</font></td>
+						<% elsif AvailableQueue.find_by_reservation_id(reserve.id).present? %>
+								<td><font color= "red">受け取り可</font></td>
+						<% elsif LendQueue.find_by_reservation_id(reserve.id).present? %>
+								<td><font color= "magenta">貸出中</font></td>
+						<% elsif !reserve.return_date.present? %>
+								<td><font color= "black">削除済み</font></td>
+						<% else %>
+								<td><font color= "lime">返却済み</font></td>
+						<% end %>
+							<td><%= reserve.lend_date %></td>
+							<td><%= reserve.return_date %></td>
+						<% end %>
+						</tr>
+					<% end %>
+					</table>
+				</div>
+			</div>
+			<div id="tab4" class="tab">
+				<I>受け取り可Table</I>
+				<div class="list">
+					<table border="1">
+						<tr>
+							<th>予約番号</th><th>会員番号</th><th>ISBN</th><th>受け取り館</th>
+						</tr>
+						<% if @availablequeue.present? %>
+							<% @availablequeue.each do |res|  %>
+							<tr>
+							<td><%= res.reservation_id %></td>
+							<td><%= res.member_id %></td>
+							<td><%= link_to res.book.isbn, book_path(res.book.isbn) %></td>
+							<td><%= Library.find_by_id(res.library_id).name %></td>
+						<% end %>
+						</tr>
+					<% end %>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%= javascript_tag(%(ChangeTab("#{(@tab.present?) ? @tab : 'tab1'}");)) %>

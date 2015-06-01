@@ -1,0 +1,24 @@
+<h2>ログイン</h2>
+<% if flash.alert %>
+	<p class="alert"><%= flash.alert %>
+<% end %>
+
+<%= form_tag :session do %>
+	<table id="login_form">
+	<tr>
+		<td align="right">ログインID(email)</td>
+		<td><%= text_field_tag "name", "", style: "width: 120px" %></td>
+	</tr>
+	<tr>
+		<td align="right">パスワード</td>
+		<td><%= text_field_tag "password", "", style: "width: 120px" %></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+			<%= submit_tag "ログイン" %>
+		</td>
+	</tr>
+</table>
+<%= hidden_field_tag "from", request.path %>
+<% end %>
+

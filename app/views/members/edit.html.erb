@@ -1,0 +1,9 @@
+
+
+<% store_location %>
+<h1>会員情報の編集</h1>
+<p class="border"></p>
+<%= form_for @member do |form| %>
+	<%= render "form", form: form %>
+<p><%= form.submit "更新" %></p>
+<% end %>

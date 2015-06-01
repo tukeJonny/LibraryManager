@@ -1,0 +1,18 @@
+<h1>会員一覧</h1>
+<% store_location %>
+<p class="border"></p>
+<table class="list" border="1">
+	<tr><th>会員番号</th><th>ユーザID</th><th>氏名</th><th>メールアドレス</th><th>所属館</th><th>管理者権限</th></tr>
+	<% @members.each do |member| %>
+		<tr>
+		<td><%= member.id %></td>
+		<td><%= member.user_id %></td>
+		<td><%= member.name %></td>
+		<td><%= member.email %></td>
+		<td><%=(member.library_id == 0) ? "システム管理者" :  Library.where("id = ?", member.library_id)[0].name %></td>
+		<td><%= (member.admin) ? "o" : "x" %></td>
+		<td><%= link_to '詳細', member %></td>
+	</tr>
+<% end %>
+</table>
+<%= will_paginate @members %>

@@ -1,0 +1,39 @@
+<% store_location %>
+<h1>蔵書一覧</h1>
+<p class="border"></p>
+
+<%= form_tag :books, method: :post do %>
+	<table>
+		<tr>
+			<th>追加する本のISBN：</th>
+			<td><%= text_field_tag 'isbn', "" %></td>
+		</tr>
+		<tr>
+		<th>追加冊数：</th>
+		<td><%= text_field_tag 'quantity', "", size: 4 %></td>
+	</tr>
+</table>
+<%= hidden_field_tag 'library_id', @current_member.library_id %>
+<%= submit_tag '追加' %>
+<% end %>
+
+
+<table border="1">
+	<tr>
+		　　  <th>ID</th><th>ISBN</th><th>冊数</th><th>所蔵館</th><th></th>
+	</tr>
+	<% @books.each do |book| %>
+		<tr>
+		<td><%= book.id %></td>
+		<td><%= book.isbn %></td>
+		<td><%= book.quantity %></td>
+		<td><%= book.library.name %></td>
+		<%= form_tag book_path(book.isbn), method: :get do %>
+			<% text_field_tag 'isbn', book.isbn %>
+		<td><%= submit_tag '詳細' %></td>
+	<% end %>
+	</tr>
+<% end %>
+</table>
+<%= will_paginate @books %>
+

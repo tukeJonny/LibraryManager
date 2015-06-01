@@ -1,0 +1,26 @@
+<% store_location %>
+<% options = [] %>
+<% @libraries.each do |library| %>
+	<% options << [library.name, library.id] %>
+<% end %>
+
+<h1>貸出処理</h1>
+<p class="border"></p>
+<table>
+	<%= form_tag :atolUpdate_reservations, method: :put do %>
+		<tr>
+		<th>貸出する本のisbn：</th>
+		<td><%= text_field_tag 'isbn', '' %></td>
+		<td>所蔵館：</td>
+		<td><%= select_tag(:library_id, options_for_select(options, :prompt => "本の所蔵館")) %></td>
+	</tr>
+	<tr>
+		<th>会員のemailアドレス：</th>
+		<td colspan="2"><%= text_field_tag 'email', '' %></td>
+		<td colspan="2"></td>
+	</tr>
+	<tr>
+		<td colspan="4"><%= submit_tag '貸し出す' %></td>
+	</tr>
+<% end %>
+</table>

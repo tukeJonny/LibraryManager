@@ -1,0 +1,21 @@
+<h1>お知らせ一覧</h1>
+<% store_location %>
+<p class="border"></p>
+<% if @current_member.present? &&  @current_member.admin %>
+	<p><%= link_to "新規作成", :new_notice %></p>
+<% end %>
+<table border="1">
+	<% @notices.each do |news| %>
+		<tr>
+		<td><h3><%= news.title %></h3>
+			<p><h4><%= truncate(news.body, length: 80) %></h4> <%= link_to '続きを読む', notice_path(news.id)%><p></td>
+		<% if @current_member.present? &&  @current_member.admin %>
+			<td>
+			<%= link_to "編集", [:edit, news] %> | 
+			<%= link_to "削除", news, method: :delete, confirm: "本当に削除しますか？" %>
+		</td>
+	<% end %>
+	</tr>
+<% end %>
+</table>
+<%= will_paginate @notices %>

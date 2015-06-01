@@ -1,0 +1,14 @@
+<h1>会員詳細</h1>
+<% store_location %>
+<p class="border"></p>
+
+<table>
+	<tr><th>ユーザID</th><td><%= @member.user_id %></td></tr>
+	<tr><th>氏名</th><td><%= @member.name %></td></tr>
+	<tr><th>メールアドレス</th><td><%= @member.email %></td></tr>
+</table>
+<% if @current_member.admin || @current_member.id == @member.id %>
+	<p><%= link_to '編集', [:edit, @member] %> 
+	 <%= link_to '削除', @member, method: :delete, confirm: "本当に削除しますか?" %>
+</p>
+ <% end %>

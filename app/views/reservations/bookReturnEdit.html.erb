@@ -1,0 +1,27 @@
+<% store_location %>
+
+<h1>返却処理</h1>
+<%= form_tag :bookReturnEdit_reservations,method: :get do %>
+	会員番号：<%= text_field_tag 'member_id', @member_id %>
+		<%= submit_tag '検索' %>
+	<% end %>
+<% if @lend.present? %>
+	<h3>検索結果</h3>
+<table>
+	<tr>
+		<th>isbn</th>
+		<th>返却</th>
+	</tr>
+	<% @lend.each do |le| %>
+		<%= form_tag :bookReturnUpdate_reservations,method: :put do %>
+		<tr>
+		<th><%= Book.where(id:le.book_id)[0].isbn  %></th>
+		<th><%= hidden_field_tag(:lend_id,le.id) %>
+		<%= submit_tag '返却' %>
+		</th>
+	</tr>
+<% end %>
+<% end %>
+</table>
+
+	<% end %>
